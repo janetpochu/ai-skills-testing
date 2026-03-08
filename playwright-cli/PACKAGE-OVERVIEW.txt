@@ -8,7 +8,7 @@
 playwright-cli-skill/
 │
 ├── 📄 SKILL.md (19KB)               ← Main skill documentation
-│   └─→ What Claude reads to USE Playwright
+│   └─→ What AI reads to USE Playwright
 │
 ├── 📄 README.md (4KB)               ← Package overview
 │   └─→ Explains what's included
@@ -17,8 +17,8 @@ playwright-cli-skill/
 │   └─→ How to install and configure everything
 │
 └── 📁 tests/
-    ├── 📄 TESTING-GUIDE.md (6KB)   ← Instructions for Claude
-    │   └─→ How Claude should TEST the skill
+    ├── 📄 TESTING-GUIDE.md (6KB)   ← Instructions for AI
+    │   └─→ How AI should TEST the skill
     │
     ├── 📄 TEST-SUITE.md (18KB)     ← Test scenarios
     │   └─→ WHAT to test (8 comprehensive scenarios)
@@ -38,21 +38,21 @@ playwright-cli-skill/
    ┌─────────────────────────────────────────────────────────────────┐
    │ Upload: SKILL.md only                                           │
    │ Say: "Help me automate browsing"                                │
-   │ Claude: Uses Playwright following SKILL.md guidance             │
+   │ AI: Uses Playwright following SKILL.md guidance             │
    └─────────────────────────────────────────────────────────────────┘
 
 2️⃣  TESTING (Validate Skill Quality)
    ┌─────────────────────────────────────────────────────────────────┐
    │ Upload: playwright-cli-skill/ folder                            │
    │ Say: "Please test this skill"                                   │
-   │ Claude: Reads TESTING-GUIDE.md → Runs tests → Reports results  │
+   │ AI: Reads TESTING-GUIDE.md → Runs tests → Reports results  │
    └─────────────────────────────────────────────────────────────────┘
 
 3️⃣  IMPROVEMENT (Test-Driven Development)
    ┌─────────────────────────────────────────────────────────────────┐
    │ Upload: playwright-cli-skill/ folder                            │
    │ Say: "Test the skill and improve any failing areas"            │
-   │ Claude: Tests → Finds gaps → Updates SKILL.md → Re-tests       │
+   │ AI: Tests → Finds gaps → Updates SKILL.md → Re-tests       │
    └─────────────────────────────────────────────────────────────────┘
 
 
@@ -62,11 +62,11 @@ playwright-cli-skill/
 
    You Upload Folder
          ↓
-   Claude Finds TESTING-GUIDE.md
+   AI Finds TESTING-GUIDE.md
          ↓
-   Claude Reads Instructions
+   AI Reads Instructions
          ↓
-   Claude Runs: bash run-tests.sh --quick
+   AI Runs: bash run-tests.sh --quick
          ↓
    Tests Execute (4-10 scenarios)
          ↓
@@ -112,23 +112,21 @@ Full Suite (2-3 minutes):
 
 Step 1: Install Prerequisites
   $ npm install -g @playwright/cli@latest
-  $ npx playwright install chromium
 
 Step 2: Extract Package
-  $ tar -xzf playwright-cli-skill.tar.gz
   $ cd playwright-cli-skill/
 
 Step 3: Run Quick Tests
   $ cd tests/
   $ bash run-tests.sh --quick
 
-Step 4: Upload to Claude
+Step 4: Upload to AI
   - Upload the playwright-cli-skill/ folder
   - Say: "Please test this skill"
 
 Step 5: Use for Browser Automation
   - Upload just SKILL.md
-  - Ask Claude to help with browser tasks
+  - Ask AI to help with browser tasks
 
 
 ═══════════════════════════════════════════════════════════════════════════
@@ -152,10 +150,10 @@ Step 5: Use for Browser Automation
    - Result archiving
 
 ✅ Self-Testing Loop
-   - Claude can test itself
-   - Claude can identify gaps
-   - Claude can suggest fixes
-   - Claude can re-validate
+   - AI can test itself
+   - AI can identify gaps
+   - AI can suggest fixes
+   - AI can re-validate
 
 ✅ Comprehensive Coverage
    - 8 detailed test scenarios
@@ -182,9 +180,9 @@ Pass Rate    Status              Action
 
 You now have a COMPLETE, SELF-TESTING SKILL PACKAGE that:
 
-  ✅ Teaches Claude how to use Playwright (SKILL.md)
+  ✅ Teaches AI how to use Playwright (SKILL.md)
   ✅ Tests itself automatically (run-tests.sh)
-  ✅ Tells Claude how to test it (TESTING-GUIDE.md)
+  ✅ Tells AI how to test it (TESTING-GUIDE.md)
   ✅ Defines quality standards (TEST-SUITE.md)
   ✅ Can improve itself (test → identify gaps → fix → re-test)
 
@@ -195,10 +193,10 @@ This is a PRODUCTION-READY skill package with built-in quality assurance!
 📞 NEXT STEPS
 ═══════════════════════════════════════════════════════════════════════════
 
-1. Read: HOW-TO-MAKE-CLAUDE-TEST.md (detailed instructions)
+1. Read: HOW-TO-MAKE-AI-TEST.md (detailed instructions)
 2. Install: Playwright CLI and browsers
 3. Test: Run bash run-tests.sh --quick
-4. Upload: Share folder with Claude for testing
+4. Upload: Share folder with AI for testing
 5. Use: Upload SKILL.md for browser automation
 
 Enjoy your self-testing Playwright skill! 🎉
@@ -210,7 +208,7 @@ Enjoy your self-testing Playwright skill! 🎉
 
 1. playwright-cli-skill/                (Complete folder)
 2. playwright-cli-skill.tar.gz          (Compressed backup)
-3. HOW-TO-MAKE-CLAUDE-TEST.md           (Testing instructions)
+3. HOW-TO-MAKE-AI-TEST.md           (Testing instructions)
 4. SETUP-GUIDE.md                       (Setup instructions)
 
 Everything you need to test and use the Playwright skill! ✅

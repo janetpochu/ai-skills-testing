@@ -17,13 +17,13 @@ node --version
 npm install -g @playwright/cli@latest
 
 # Verify installation
-playwright-cli --version
+npx playwright-cli --version
 ```
 
 ### Step 3: Install Browser
 ```bash
 # Install Chromium browser (required for first use)
-npx playwright install chromium
+
 
 # This may take a few minutes to download browser binaries
 ```
@@ -31,11 +31,11 @@ npx playwright install chromium
 ### Step 4: Test Installation
 ```bash
 # Quick test - open a webpage
-playwright-cli open https://example.com
+npx playwright-cli open https://example.com
 sleep 2
-playwright-cli snapshot
-playwright-cli screenshot test.png
-playwright-cli close
+npx playwright-cli snapshot
+npx playwright-cli screenshot test.png
+npx playwright-cli close
 
 # If test.png was created, you're good to go! ✅
 ls test.png
@@ -48,13 +48,13 @@ ls test.png
 ### Basic Navigation Test
 ```bash
 # 1. Open a website
-playwright-cli open https://example.com
+npx playwright-cli open https://example.com
 
 # 2. Wait for it to load
 sleep 2
 
 # 3. See what's on the page
-playwright-cli snapshot
+npx playwright-cli snapshot
 
 # Output will look like:
 # - heading "Example Domain" [ref: e1]
@@ -62,10 +62,10 @@ playwright-cli snapshot
 # - link "More information..." [ref: e3]
 
 # 4. Take a screenshot
-playwright-cli screenshot example.png
+npx playwright-cli screenshot example.png
 
 # 5. Close browser
-playwright-cli close
+npx playwright-cli close
 ```
 
 ---
@@ -75,63 +75,63 @@ playwright-cli close
 ### Use Case 1: Fill a Form
 ```bash
 # Navigate to form
-playwright-cli open https://httpbin.org/forms/post
+npx playwright-cli open https://httpbin.org/forms/post
 sleep 2
 
 # Find form fields
-playwright-cli snapshot
+npx playwright-cli snapshot
 # Look for textbox refs in the output
 
 # Fill fields (replace eXX with actual refs from snapshot)
-playwright-cli fill e5 "John Doe"
-playwright-cli fill e6 "john@example.com"
+npx playwright-cli fill e5 "John Doe"
+npx playwright-cli fill e6 "john@example.com"
 
 # Submit
-playwright-cli click e7  # Submit button ref
+npx playwright-cli click e7  # Submit button ref
 sleep 2
 
 # Verify
-playwright-cli snapshot
-playwright-cli close
+npx playwright-cli snapshot
+npx playwright-cli close
 ```
 
 ### Use Case 2: Login to a Site
 ```bash
 # Navigate
-playwright-cli open https://practicetestautomation.com/practice-test-login/
+npx playwright-cli open https://practicetestautomation.com/practice-test-login/
 sleep 2
 
 # Get form structure
-playwright-cli snapshot
+npx playwright-cli snapshot
 
 # Login (username: student, password: Password123)
-playwright-cli fill e5 "student"
-playwright-cli fill e6 "Password123"
-playwright-cli click e7
+npx playwright-cli fill e5 "student"
+npx playwright-cli fill e6 "Password123"
+npx playwright-cli click e7
 sleep 3
 
 # Verify login
-playwright-cli snapshot
-playwright-cli screenshot logged-in.png
-playwright-cli close
+npx playwright-cli snapshot
+npx playwright-cli screenshot logged-in.png
+npx playwright-cli close
 ```
 
 ### Use Case 3: Extract Data
 ```bash
 # Navigate
-playwright-cli open https://jsonplaceholder.typicode.com/posts
+npx playwright-cli open https://jsonplaceholder.typicode.com/posts
 sleep 2
 
 # Get page structure
-playwright-cli snapshot > page-structure.txt
+npx playwright-cli snapshot > page-structure.txt
 
 # Extract text content
-playwright-cli eval "document.body.innerText" > extracted-data.txt
+npx playwright-cli eval "document.body.innerText" > extracted-data.txt
 
 # Take screenshot for reference
-playwright-cli screenshot data-page.png
+npx playwright-cli screenshot data-page.png
 
-playwright-cli close
+npx playwright-cli close
 
 # Review extracted data
 cat extracted-data.txt
@@ -140,17 +140,17 @@ cat extracted-data.txt
 ### Use Case 4: Take Screenshots
 ```bash
 # Open page
-playwright-cli open https://github.com
+npx playwright-cli open https://github.com
 sleep 2
 
 # Full page screenshot
-playwright-cli screenshot --full-page github-full.png
+npx playwright-cli screenshot --full-page github-full.png
 
 # Element screenshot (after finding ref in snapshot)
-playwright-cli snapshot
-playwright-cli screenshot e10 github-header.png  # Replace e10 with actual header ref
+npx playwright-cli snapshot
+npx playwright-cli screenshot e10 github-header.png  # Replace e10 with actual header ref
 
-playwright-cli close
+npx playwright-cli close
 ```
 
 ---
@@ -164,13 +164,13 @@ cd /path/to/test-suite
 
 # Run quick validation tests
 bash << 'EOF'
-playwright-cli open "https://example.com" && sleep 2 && playwright-cli snapshot && playwright-cli close
+npx playwright-cli open "https://example.com" && sleep 2 && npx playwright-cli snapshot && npx playwright-cli close
 echo "✓ Test 1: Navigation - PASSED"
 
-playwright-cli open "https://httpbin.org/delay/2" && sleep 3 && playwright-cli snapshot && playwright-cli close  
+npx playwright-cli open "https://httpbin.org/delay/2" && sleep 3 && npx playwright-cli snapshot && npx playwright-cli close  
 echo "✓ Test 2: Slow loading - PASSED"
 
-playwright-cli open "https://example.com" && sleep 2 && playwright-cli screenshot quick-test.png && playwright-cli close && ls quick-test.png
+npx playwright-cli open "https://example.com" && sleep 2 && npx playwright-cli screenshot quick-test.png && npx playwright-cli close && ls quick-test.png
 echo "✓ Test 3: Screenshot - PASSED"
 EOF
 ```
@@ -187,12 +187,12 @@ cd playwright-tests
 # Run individual tests from TEST-SUITE.md
 # Start with Test 2 (Slow Loading) as it's fully automated:
 
-playwright-cli open "https://httpbin.org/delay/3"
-playwright-cli snapshot > test2_immediate.txt
+npx playwright-cli open "https://httpbin.org/delay/3"
+npx playwright-cli snapshot > test2_immediate.txt
 sleep 4
-playwright-cli snapshot > test2_complete.txt
-playwright-cli screenshot test2_loaded.png
-playwright-cli close
+npx playwright-cli snapshot > test2_complete.txt
+npx playwright-cli screenshot test2_loaded.png
+npx playwright-cli close
 
 echo "✓ Test 2 complete - check test2_*.txt and test2_*.png files"
 ```
@@ -217,7 +217,6 @@ npm config get prefix
 ### Problem: "Browser not found"
 ```bash
 # Install browsers
-npx playwright install chromium
 
 # Or install all browsers
 npx playwright install
@@ -229,23 +228,23 @@ npx playwright install
 echo '{"timeout": 60000}' > playwright-cli.json
 
 # Then retry
-playwright-cli open https://slow-site.com
+npx playwright-cli open https://slow-site.com
 ```
 
 ### Problem: "Element not found"
 ```bash
 # Always snapshot first to get fresh refs
-playwright-cli snapshot
+npx playwright-cli snapshot
 
 # Then use refs from the output
-playwright-cli click eXX
+npx playwright-cli click eXX
 ```
 
 ---
 
 ## Understanding Snapshots
 
-When you run `playwright-cli snapshot`, you get output like this:
+When you run `npx playwright-cli snapshot`, you get output like this:
 
 ```
 - main [ref: e1]
@@ -267,13 +266,13 @@ When you run `playwright-cli snapshot`, you get output like this:
 **How to use refs:**
 ```bash
 # To click the "Sign In" button:
-playwright-cli click e6
+npx playwright-cli click e6
 
 # To fill the search box:
-playwright-cli fill e7 "my search query"
+npx playwright-cli fill e7 "my search query"
 
 # To click the "About" link:
-playwright-cli click e5
+npx playwright-cli click e5
 ```
 
 ---
@@ -303,43 +302,43 @@ Here's a complete example that follows all best practices:
 echo "Starting automation workflow..."
 
 # 1. Navigate
-playwright-cli open https://practicetestautomation.com/practice-test-login/
+npx playwright-cli open https://practicetestautomation.com/practice-test-login/
 sleep 2
 echo "✓ Page loaded"
 
 # 2. Verify page loaded correctly
-playwright-cli snapshot > step1-login-page.txt
-playwright-cli screenshot step1-login-page.png
+npx playwright-cli snapshot > step1-login-page.txt
+npx playwright-cli screenshot step1-login-page.png
 echo "✓ Captured login page"
 
 # 3. Extract refs from snapshot (manually check step1-login-page.txt)
 # Assuming username is e5, password is e6, submit is e7
 
 # 4. Fill login form
-playwright-cli fill e5 "student"
+npx playwright-cli fill e5 "student"
 echo "✓ Entered username"
 
-playwright-cli fill e6 "Password123"
+npx playwright-cli fill e6 "Password123"
 echo "✓ Entered password"
 
 # 5. Submit and wait
-playwright-cli click e7
+npx playwright-cli click e7
 sleep 3
 echo "✓ Submitted form"
 
 # 6. Verify login success
-playwright-cli snapshot > step2-logged-in.txt
-playwright-cli screenshot step2-logged-in.png
+npx playwright-cli snapshot > step2-logged-in.txt
+npx playwright-cli screenshot step2-logged-in.png
 
 # 7. Check for success message
-playwright-cli eval "document.body.innerText" > step2-page-text.txt
+npx playwright-cli eval "document.body.innerText" > step2-page-text.txt
 grep -q "Congratulations" step2-page-text.txt && echo "✓ Login successful!" || echo "✗ Login failed"
 
 # 8. Take final screenshot
-playwright-cli screenshot --full-page final-state.png
+npx playwright-cli screenshot --full-page final-state.png
 
 # 9. Cleanup
-playwright-cli close
+npx playwright-cli close
 echo "✓ Automation complete"
 
 echo ""
@@ -369,8 +368,8 @@ If you encounter issues:
 
 1. **Check the SKILL.md** - Look in the Troubleshooting section
 2. **Take Screenshots** - Visual debugging helps
-3. **Check Console** - `playwright-cli console` shows JavaScript errors
-4. **Check Network** - `playwright-cli network` shows failed requests
+3. **Check Console** - `npx playwright-cli console` shows JavaScript errors
+4. **Check Network** - `npx playwright-cli network` shows failed requests
 5. **Re-snapshot** - Refs become stale, always get fresh ones
 
 ---
@@ -398,22 +397,22 @@ If you can do all of the above by following the skill documentation, the skill i
 
 ```
 # Essential Commands
-playwright-cli open <url>              # Navigate
+npx playwright-cli open <url>              # Navigate
 sleep 2                                # Wait for load
-playwright-cli snapshot                # Get element refs
-playwright-cli click <ref>             # Click element
-playwright-cli fill <ref> "text"       # Fill input
-playwright-cli screenshot <file>       # Take screenshot
-playwright-cli console                 # Check errors
-playwright-cli close                   # Close browser
+npx playwright-cli snapshot                # Get element refs
+npx playwright-cli click <ref>             # Click element
+npx playwright-cli fill <ref> "text"       # Fill input
+npx playwright-cli screenshot <file>       # Take screenshot
+npx playwright-cli console                 # Check errors
+npx playwright-cli close                   # Close browser
 
 # Pattern
 snapshot → interact → wait → verify → screenshot
 
 # Debug
-playwright-cli console                 # JavaScript errors
-playwright-cli network                 # Network requests
-playwright-cli screenshot --full-page  # Visual check
+npx playwright-cli console                 # JavaScript errors
+npx playwright-cli network                 # Network requests
+npx playwright-cli screenshot --full-page  # Visual check
 ```
 
 Save this card for quick reference during automation! 📋

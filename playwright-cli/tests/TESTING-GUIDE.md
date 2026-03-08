@@ -1,6 +1,6 @@
-# Instructions for Claude: Testing the Playwright CLI Skill
+# Instructions for AI: Testing the Playwright CLI Skill
 
-This document explains how Claude (an AI assistant) should use the test suite to validate and improve the Playwright CLI skill.
+This document explains how AI (an AI assistant) should use the test suite to validate and improve the Playwright CLI skill.
 
 ## When to Use This Test Suite
 
@@ -182,7 +182,7 @@ cat Test-Name.log
 rm -rf test-results-*/
 ```
 
-## Best Practices for Claude
+## Best Practices for AI
 
 1. **Always run quick tests first** - Saves time
 2. **Read the logs** - Don't just report pass/fail numbers
@@ -248,6 +248,6 @@ This test suite is designed to work with the skill-creator skill for:
 
 ## Remember
 
-The goal is not just to pass tests, but to ensure the SKILL.md provides such clear guidance that an AI agent (like Claude) can successfully complete browser automation tasks independently, without human intervention.
+The goal is not just to pass tests, but to ensure the SKILL.md provides such clear guidance that an AI agent (like AI) can successfully complete browser automation tasks independently, without human intervention.
 
 Good luck testing! 🧪

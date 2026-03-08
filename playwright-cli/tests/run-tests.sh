@@ -25,11 +25,10 @@ echo "Results will be saved in: $RESULTS_DIR"
 echo ""
 
 # Check if Playwright CLI is installed
-if ! command -v playwright-cli &> /dev/null; then
-    echo -e "${RED}ERROR: playwright-cli not found${NC}"
+if ! command -v npx playwright-cli &> /dev/null; then
+    echo -e "${RED}ERROR: npx playwright-cli not found${NC}"
     echo "Please install it first:"
     echo "  npm install -g @playwright/cli@latest"
-    echo "  npx playwright install chromium"
     exit 1
 fi
 
@@ -67,32 +66,32 @@ if [[ "$1" == "--quick" ]]; then
     echo ""
     
     run_test "Quick Navigation" "
-        playwright-cli open https://example.com &&
+        npx playwright-cli open https://example.com &&
         sleep 2 &&
-        playwright-cli snapshot &&
-        playwright-cli close
+        npx playwright-cli snapshot &&
+        npx playwright-cli close
     "
     
     run_test "Quick Timing" "
-        playwright-cli open https://httpbin.org/delay/2 &&
+        npx playwright-cli open https://httpbin.org/delay/2 &&
         sleep 3 &&
-        playwright-cli snapshot &&
-        playwright-cli close
+        npx playwright-cli snapshot &&
+        npx playwright-cli close
     "
     
     run_test "Quick Screenshot" "
-        playwright-cli open https://example.com &&
+        npx playwright-cli open https://example.com &&
         sleep 2 &&
-        playwright-cli screenshot quick-test.png &&
-        playwright-cli close &&
+        npx playwright-cli screenshot quick-test.png &&
+        npx playwright-cli close &&
         test -f quick-test.png
     "
     
     run_test "Quick Multi-Tab" "
-        playwright-cli open https://example.com &&
-        playwright-cli tab-new https://example.org &&
-        playwright-cli tab-list &&
-        playwright-cli close
+        npx playwright-cli open https://example.com &&
+        npx playwright-cli tab-new https://example.org &&
+        npx playwright-cli tab-list &&
+        npx playwright-cli close
     "
     
     echo ""
@@ -118,108 +117,108 @@ echo ""
 
 # Test 1: Basic Navigation
 run_test "Basic Navigation" "
-    playwright-cli open https://example.com &&
+    npx playwright-cli open https://example.com &&
     sleep 2 &&
-    playwright-cli snapshot > test1-snapshot.txt &&
-    playwright-cli screenshot test1-screenshot.png &&
-    playwright-cli close &&
+    npx playwright-cli snapshot > test1-snapshot.txt &&
+    npx playwright-cli screenshot test1-screenshot.png &&
+    npx playwright-cli close &&
     test -f test1-screenshot.png
 "
 
 # Test 2: Slow Loading Page
 run_test "Slow Loading Page" "
-    playwright-cli open https://httpbin.org/delay/3 &&
-    playwright-cli snapshot > test2-immediate.txt &&
+    npx playwright-cli open https://httpbin.org/delay/3 &&
+    npx playwright-cli snapshot > test2-immediate.txt &&
     sleep 4 &&
-    playwright-cli snapshot > test2-complete.txt &&
-    playwright-cli screenshot test2-loaded.png &&
-    playwright-cli close &&
+    npx playwright-cli snapshot > test2-complete.txt &&
+    npx playwright-cli screenshot test2-loaded.png &&
+    npx playwright-cli close &&
     test -f test2-loaded.png
 "
 
 # Test 3: Error Handling (404)
 run_test "Error Handling 404" "
-    playwright-cli open https://httpstat.us/404 &&
+    npx playwright-cli open https://httpstat.us/404 &&
     sleep 2 &&
-    playwright-cli snapshot > test3-404.txt &&
-    playwright-cli screenshot test3-404.png &&
-    playwright-cli close &&
+    npx playwright-cli snapshot > test3-404.txt &&
+    npx playwright-cli screenshot test3-404.png &&
+    npx playwright-cli close &&
     test -f test3-404.png
 "
 
 # Test 4: Error Handling (500)
 run_test "Error Handling 500" "
-    playwright-cli open https://httpstat.us/500 &&
+    npx playwright-cli open https://httpstat.us/500 &&
     sleep 2 &&
-    playwright-cli snapshot > test4-500.txt &&
-    playwright-cli screenshot test4-500.png &&
-    playwright-cli close &&
+    npx playwright-cli snapshot > test4-500.txt &&
+    npx playwright-cli screenshot test4-500.png &&
+    npx playwright-cli close &&
     test -f test4-500.png
 "
 
 # Test 5: Multi-Tab Management
 run_test "Multi-Tab Management" "
-    playwright-cli open https://example.com &&
+    npx playwright-cli open https://example.com &&
     sleep 2 &&
-    playwright-cli tab-new https://example.org &&
+    npx playwright-cli tab-new https://example.org &&
     sleep 2 &&
-    playwright-cli tab-list > test5-tabs.txt &&
-    playwright-cli tab-select 0 &&
-    playwright-cli snapshot > test5-tab0.txt &&
-    playwright-cli tab-select 1 &&
-    playwright-cli snapshot > test5-tab1.txt &&
-    playwright-cli close &&
+    npx playwright-cli tab-list > test5-tabs.txt &&
+    npx playwright-cli tab-select 0 &&
+    npx playwright-cli snapshot > test5-tab0.txt &&
+    npx playwright-cli tab-select 1 &&
+    npx playwright-cli snapshot > test5-tab1.txt &&
+    npx playwright-cli close &&
     test -f test5-tabs.txt
 "
 
 # Test 6: Console Debugging
 run_test "Console Debugging" "
-    playwright-cli open https://example.com &&
+    npx playwright-cli open https://example.com &&
     sleep 2 &&
-    playwright-cli console > test6-console.txt &&
-    playwright-cli close &&
+    npx playwright-cli console > test6-console.txt &&
+    npx playwright-cli close &&
     test -f test6-console.txt
 "
 
 # Test 7: Network Monitoring
 run_test "Network Monitoring" "
-    playwright-cli open https://jsonplaceholder.typicode.com/posts &&
+    npx playwright-cli open https://jsonplaceholder.typicode.com/posts &&
     sleep 3 &&
-    playwright-cli network > test7-network.txt &&
-    playwright-cli close &&
+    npx playwright-cli network > test7-network.txt &&
+    npx playwright-cli close &&
     test -f test7-network.txt
 "
 
 # Test 8: Full Page Screenshot
 run_test "Full Page Screenshot" "
-    playwright-cli open https://example.com &&
+    npx playwright-cli open https://example.com &&
     sleep 2 &&
-    playwright-cli screenshot --full-page test8-fullpage.png &&
-    playwright-cli close &&
+    npx playwright-cli screenshot --full-page test8-fullpage.png &&
+    npx playwright-cli close &&
     test -f test8-fullpage.png
 "
 
 # Test 9: JavaScript Evaluation
 run_test "JavaScript Evaluation" "
-    playwright-cli open https://example.com &&
+    npx playwright-cli open https://example.com &&
     sleep 2 &&
-    playwright-cli eval 'document.title' > test9-title.txt &&
-    playwright-cli eval 'document.body.innerText' > test9-text.txt &&
-    playwright-cli close &&
+    npx playwright-cli eval 'document.title' > test9-title.txt &&
+    npx playwright-cli eval 'document.body.innerText' > test9-text.txt &&
+    npx playwright-cli close &&
     test -f test9-title.txt &&
     test -f test9-text.txt
 "
 
 # Test 10: Session Persistence
 run_test "Session Persistence" "
-    playwright-cli open https://example.com --session=test-session &&
+    npx playwright-cli open https://example.com --session=test-session &&
     sleep 2 &&
-    playwright-cli snapshot > test10-session1.txt &&
-    playwright-cli open https://example.org --session=test-session &&
+    npx playwright-cli snapshot > test10-session1.txt &&
+    npx playwright-cli open https://example.org --session=test-session &&
     sleep 2 &&
-    playwright-cli snapshot > test10-session2.txt &&
-    playwright-cli session-list > test10-sessions.txt &&
-    playwright-cli session-stop test-session &&
+    npx playwright-cli snapshot > test10-session2.txt &&
+    npx playwright-cli session-list > test10-sessions.txt &&
+    npx playwright-cli session-stop test-session &&
     test -f test10-sessions.txt
 "
 

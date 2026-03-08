@@ -5,14 +5,10 @@ This test suite validates that the improved SKILL.md provides sufficient guidanc
 ## Prerequisites
 
 ```bash
-# Install Playwright CLI
-npm install -g @playwright/cli@latest
-
-# Verify installation
-playwright-cli --version
+# Verify Playwright CLI is available
+npx playwright-cli --version
 
 # Install browsers
-npx playwright install chromium
 
 # Verify browsers installed
 npx playwright install --dry-run
@@ -30,23 +26,23 @@ npx playwright install --dry-run
 
 ```bash
 # 1. Navigate to form
-playwright-cli open "https://www.w3schools.com/html/tryit.asp?filename=tryhtml_form_submit"
+npx playwright-cli open "https://www.w3schools.com/html/tryit.asp?filename=tryhtml_form_submit"
 sleep 3
 
 # 2. Take initial snapshot
-playwright-cli snapshot > test1_initial.txt
+npx playwright-cli snapshot > test1_initial.txt
 echo "✓ Initial snapshot captured"
 
 # 3. Take screenshot of starting state
-playwright-cli screenshot test1_start.png
+npx playwright-cli screenshot test1_start.png
 echo "✓ Starting screenshot saved"
 
 # 4. Switch to iframe (form is in iframe)
-playwright-cli eval "await page.frame({name: 'iframeResult'}).waitForSelector('form')"
+npx playwright-cli eval "await page.frame({name: 'iframeResult'}).waitForSelector('form')"
 sleep 1
 
 # 5. Get iframe snapshot
-playwright-cli snapshot > test1_iframe.txt
+npx playwright-cli snapshot > test1_iframe.txt
 echo "✓ Iframe snapshot captured"
 
 # 6. Fill form fields (refs will come from snapshot)
@@ -54,22 +50,22 @@ echo "✓ Iframe snapshot captured"
 # This is a template - replace eXX with actual refs from snapshot
 
 # Example commands (adjust refs based on actual snapshot):
-# playwright-cli fill e10 "John Doe"
-# playwright-cli fill e11 "Smith"
-# playwright-cli click e12  # Submit button
+# npx playwright-cli fill e10 "John Doe"
+# npx playwright-cli fill e11 "Smith"
+# npx playwright-cli click e12  # Submit button
 # sleep 2
 
 # 7. Verify submission
-playwright-cli snapshot > test1_result.txt
-playwright-cli screenshot test1_result.png
+npx playwright-cli snapshot > test1_result.txt
+npx playwright-cli screenshot test1_result.png
 echo "✓ Result captured"
 
 # 8. Check console for errors
-playwright-cli console > test1_console.txt
+npx playwright-cli console > test1_console.txt
 echo "✓ Console captured"
 
 # Cleanup
-playwright-cli close
+npx playwright-cli close
 ```
 
 ### Success Criteria
@@ -98,29 +94,29 @@ playwright-cli close
 ```bash
 # 1. Navigate to slow endpoint
 echo "Starting slow page test..."
-playwright-cli open "https://httpbin.org/delay/3"
+npx playwright-cli open "https://httpbin.org/delay/3"
 
 # 2. Immediate snapshot (should be incomplete)
-playwright-cli snapshot > test2_immediate.txt
+npx playwright-cli snapshot > test2_immediate.txt
 echo "✓ Immediate snapshot (likely incomplete)"
 
 # 3. Wait for load
 sleep 4
 
 # 4. Post-wait snapshot (should be complete)
-playwright-cli snapshot > test2_complete.txt
+npx playwright-cli snapshot > test2_complete.txt
 echo "✓ Complete snapshot after wait"
 
 # 5. Take screenshot
-playwright-cli screenshot test2_loaded.png
+npx playwright-cli screenshot test2_loaded.png
 echo "✓ Screenshot saved"
 
 # 6. Verify content loaded
-playwright-cli eval "document.body.innerText" > test2_content.txt
+npx playwright-cli eval "document.body.innerText" > test2_content.txt
 echo "✓ Page content extracted"
 
 # Cleanup
-playwright-cli close
+npx playwright-cli close
 ```
 
 ### Success Criteria
@@ -145,12 +141,12 @@ playwright-cli close
 
 ```bash
 # 1. Navigate to login page
-playwright-cli open "https://practicetestautomation.com/practice-test-login/" --session=auth-test
+npx playwright-cli open "https://practicetestautomation.com/practice-test-login/" --session=auth-test
 sleep 2
 
 # 2. Get login form
-playwright-cli snapshot > test3_login.txt
-playwright-cli screenshot test3_login.png
+npx playwright-cli snapshot > test3_login.txt
+npx playwright-cli screenshot test3_login.png
 echo "✓ Login page captured"
 
 # 3. Fill credentials (check test3_login.txt for refs)
@@ -158,32 +154,32 @@ echo "✓ Login page captured"
 # You'll need to adjust eXX refs based on actual snapshot
 
 # Example (replace with actual refs):
-# playwright-cli fill e5 "student"
-# playwright-cli fill e6 "Password123"
-# playwright-cli click e7  # Submit
+# npx playwright-cli fill e5 "student"
+# npx playwright-cli fill e6 "Password123"
+# npx playwright-cli click e7  # Submit
 # sleep 3
 
 # 4. Verify logged in
-playwright-cli snapshot > test3_logged_in.txt
-playwright-cli screenshot test3_logged_in.png
+npx playwright-cli snapshot > test3_logged_in.txt
+npx playwright-cli screenshot test3_logged_in.png
 echo "✓ Post-login state captured"
 
 # 5. Check for success message
-playwright-cli eval "document.body.innerText" > test3_page_text.txt
+npx playwright-cli eval "document.body.innerText" > test3_page_text.txt
 echo "✓ Page text extracted"
 
 # 6. Navigate to another page (should maintain session)
-playwright-cli open "https://practicetestautomation.com/logged-in-successfully/" --session=auth-test
+npx playwright-cli open "https://practicetestautomation.com/logged-in-successfully/" --session=auth-test
 sleep 2
-playwright-cli snapshot > test3_session_check.txt
+npx playwright-cli snapshot > test3_session_check.txt
 echo "✓ Session persistence checked"
 
 # 7. Logout
-playwright-cli snapshot > test3_logout_button.txt
+npx playwright-cli snapshot > test3_logout_button.txt
 # Find logout button ref and click it
 
 # Cleanup
-playwright-cli session-stop auth-test
+npx playwright-cli session-stop auth-test
 ```
 
 ### Success Criteria
@@ -210,43 +206,43 @@ playwright-cli session-stop auth-test
 
 ```bash
 # 1. Test 404 error
-playwright-cli open "https://httpstat.us/404"
+npx playwright-cli open "https://httpstat.us/404"
 sleep 2
-playwright-cli snapshot > test4_404.txt
-playwright-cli screenshot test4_404.png
+npx playwright-cli snapshot > test4_404.txt
+npx playwright-cli screenshot test4_404.png
 echo "✓ 404 page captured"
 
 # 2. Test 500 error
-playwright-cli open "https://httpstat.us/500"
+npx playwright-cli open "https://httpstat.us/500"
 sleep 2
-playwright-cli snapshot > test4_500.txt
-playwright-cli screenshot test4_500.png
+npx playwright-cli snapshot > test4_500.txt
+npx playwright-cli screenshot test4_500.png
 echo "✓ 500 page captured"
 
 # 3. Test timeout (30 second delay - should timeout)
 echo "Testing timeout (this will take ~30 seconds)..."
-playwright-cli open "https://httpstat.us/200?sleep=30000" 2> test4_timeout_error.txt || echo "✓ Timeout error captured"
+npx playwright-cli open "https://httpstat.us/200?sleep=30000" 2> test4_timeout_error.txt || echo "✓ Timeout error captured"
 
 # 4. Test invalid URL
-playwright-cli open "https://this-domain-definitely-does-not-exist-12345.com" 2> test4_invalid_url.txt || echo "✓ Invalid URL error captured"
+npx playwright-cli open "https://this-domain-definitely-does-not-exist-12345.com" 2> test4_invalid_url.txt || echo "✓ Invalid URL error captured"
 
 # 5. Test stale element ref
-playwright-cli open "https://example.com"
+npx playwright-cli open "https://example.com"
 sleep 2
-playwright-cli snapshot > test4_snapshot1.txt
+npx playwright-cli snapshot > test4_snapshot1.txt
 # Get a ref from snapshot (e.g., e5)
 # Then reload page to make ref stale
-playwright-cli reload
+npx playwright-cli reload
 sleep 2
 # Try to click old ref - should fail
-# playwright-cli click e5 2> test4_stale_ref.txt || echo "✓ Stale ref error captured"
+# npx playwright-cli click e5 2> test4_stale_ref.txt || echo "✓ Stale ref error captured"
 
 # 6. Re-snapshot and retry with fresh ref
-playwright-cli snapshot > test4_snapshot2.txt
+npx playwright-cli snapshot > test4_snapshot2.txt
 # Now click with fresh ref should work
 
 # Cleanup
-playwright-cli close
+npx playwright-cli close
 ```
 
 ### Success Criteria
@@ -273,39 +269,39 @@ playwright-cli close
 
 ```bash
 # 1. Navigate to SPA
-playwright-cli open "https://jsonplaceholder.typicode.com/"
+npx playwright-cli open "https://jsonplaceholder.typicode.com/"
 sleep 3  # SPAs often need extra time
 
 # 2. Initial snapshot
-playwright-cli snapshot > test5_initial.txt
-playwright-cli screenshot test5_start.png
+npx playwright-cli snapshot > test5_initial.txt
+npx playwright-cli screenshot test5_start.png
 echo "✓ Initial state captured"
 
 # 3. Find and click navigation link
 # (Check snapshot for refs - adjust as needed)
-# playwright-cli click eXX  # Click "Resources" or similar
+# npx playwright-cli click eXX  # Click "Resources" or similar
 # sleep 2
 
 # 4. Verify content changed
-playwright-cli snapshot > test5_after_click.txt
-playwright-cli screenshot test5_after_click.png
+npx playwright-cli snapshot > test5_after_click.txt
+npx playwright-cli screenshot test5_after_click.png
 echo "✓ Post-click state captured"
 
 # 5. Test dynamic loading with scroll
-playwright-cli open "https://infinite-scroll-demo.com/" || playwright-cli open "https://getbootstrap.com/docs/5.0/getting-started/introduction/"
+npx playwright-cli open "https://infinite-scroll-demo.com/" || npx playwright-cli open "https://getbootstrap.com/docs/5.0/getting-started/introduction/"
 sleep 2
 
 # 6. Scroll to bottom
-playwright-cli eval "window.scrollTo(0, document.body.scrollHeight)"
+npx playwright-cli eval "window.scrollTo(0, document.body.scrollHeight)"
 sleep 2
 
 # 7. Check if new content loaded
-playwright-cli snapshot > test5_after_scroll.txt
-playwright-cli screenshot --full-page test5_scrolled.png
+npx playwright-cli snapshot > test5_after_scroll.txt
+npx playwright-cli screenshot --full-page test5_scrolled.png
 echo "✓ Scroll test complete"
 
 # Cleanup
-playwright-cli close
+npx playwright-cli close
 ```
 
 ### Success Criteria
@@ -331,8 +327,8 @@ playwright-cli close
 ### Preparation
 ```bash
 # Create test file
-echo "Test content for upload verification" > /home/claude/test-upload.txt
-ls -lh /home/claude/test-upload.txt
+echo "Test content for upload verification" > /home/AI/test-upload.txt
+ls -lh /home/AI/test-upload.txt
 echo "✓ Test file created"
 ```
 
@@ -340,35 +336,35 @@ echo "✓ Test file created"
 
 ```bash
 # 1. Navigate to upload site
-playwright-cli open "https://the-internet.herokuapp.com/upload"
+npx playwright-cli open "https://the-internet.herokuapp.com/upload"
 sleep 2
 
 # 2. Find upload input
-playwright-cli snapshot > test6_upload_form.txt
-playwright-cli screenshot test6_form.png
+npx playwright-cli snapshot > test6_upload_form.txt
+npx playwright-cli screenshot test6_form.png
 echo "✓ Upload form captured"
 
 # 3. Upload file (adjust ref based on snapshot)
-# playwright-cli upload eXX /home/claude/test-upload.txt
+# npx playwright-cli upload eXX /home/AI/test-upload.txt
 # echo "✓ File selected"
 
 # 4. Submit upload
-# playwright-cli click eYY  # Submit button
+# npx playwright-cli click eYY  # Submit button
 # sleep 3
 
 # 5. Verify upload success
-playwright-cli snapshot > test6_result.txt
-playwright-cli screenshot test6_result.png
+npx playwright-cli snapshot > test6_result.txt
+npx playwright-cli screenshot test6_result.png
 echo "✓ Upload result captured"
 
 # 6. Check for success message
-playwright-cli eval "document.body.innerText" > test6_message.txt
+npx playwright-cli eval "document.body.innerText" > test6_message.txt
 cat test6_message.txt
 echo "✓ Result message extracted"
 
 # Cleanup
-playwright-cli close
-rm /home/claude/test-upload.txt
+npx playwright-cli close
+rm /home/AI/test-upload.txt
 ```
 
 ### Success Criteria
@@ -393,45 +389,45 @@ rm /home/claude/test-upload.txt
 
 ```bash
 # 1. Open first tab
-playwright-cli open "https://example.com"
+npx playwright-cli open "https://example.com"
 sleep 2
-playwright-cli snapshot > test7_tab1.txt
-playwright-cli screenshot test7_tab1.png
+npx playwright-cli snapshot > test7_tab1.txt
+npx playwright-cli screenshot test7_tab1.png
 echo "✓ Tab 1 captured"
 
 # 2. Open new tab
-playwright-cli tab-new "https://example.org"
+npx playwright-cli tab-new "https://example.org"
 sleep 2
 
 # 3. List tabs
-playwright-cli tab-list > test7_tabs.txt
+npx playwright-cli tab-list > test7_tabs.txt
 cat test7_tabs.txt
 echo "✓ Tab list captured"
 
 # 4. Snapshot second tab
-playwright-cli snapshot > test7_tab2.txt
-playwright-cli screenshot test7_tab2.png
+npx playwright-cli snapshot > test7_tab2.txt
+npx playwright-cli screenshot test7_tab2.png
 echo "✓ Tab 2 captured"
 
 # 5. Switch back to first tab
-playwright-cli tab-select 0
+npx playwright-cli tab-select 0
 sleep 1
 
 # 6. Verify on first tab
-playwright-cli snapshot > test7_back_to_tab1.txt
-playwright-cli eval "document.title" > test7_tab1_title.txt
+npx playwright-cli snapshot > test7_back_to_tab1.txt
+npx playwright-cli eval "document.title" > test7_tab1_title.txt
 echo "✓ Switched back to Tab 1"
 
 # 7. Close second tab
-playwright-cli tab-close 1
+npx playwright-cli tab-close 1
 
 # 8. Verify single tab
-playwright-cli tab-list > test7_final_tabs.txt
+npx playwright-cli tab-list > test7_final_tabs.txt
 cat test7_final_tabs.txt
 echo "✓ Tab closed"
 
 # Cleanup
-playwright-cli close
+npx playwright-cli close
 ```
 
 ### Success Criteria
@@ -456,33 +452,33 @@ playwright-cli close
 
 ```bash
 # 1. Navigate to page with console errors
-playwright-cli open "https://the-internet.herokuapp.com/javascript_error"
+npx playwright-cli open "https://the-internet.herokuapp.com/javascript_error"
 sleep 2
 
 # 2. Capture console output
-playwright-cli console > test8_console.txt
+npx playwright-cli console > test8_console.txt
 cat test8_console.txt
 echo "✓ Console errors captured"
 
 # 3. Navigate to page with network activity
-playwright-cli open "https://jsonplaceholder.typicode.com/posts"
+npx playwright-cli open "https://jsonplaceholder.typicode.com/posts"
 sleep 3
 
 # 4. Capture network requests
-playwright-cli network > test8_network.txt
+npx playwright-cli network > test8_network.txt
 cat test8_network.txt
 echo "✓ Network requests captured"
 
 # 5. Take screenshot
-playwright-cli screenshot test8_page.png
+npx playwright-cli screenshot test8_page.png
 
 # 6. Execute custom JavaScript
-playwright-cli eval "console.log('Custom log'); return document.title" > test8_eval.txt
+npx playwright-cli eval "console.log('Custom log'); return document.title" > test8_eval.txt
 cat test8_eval.txt
 echo "✓ JavaScript execution tested"
 
 # Cleanup
-playwright-cli close
+npx playwright-cli close
 ```
 
 ### Success Criteria
@@ -522,12 +518,12 @@ echo ""
 # Test 2
 echo "▶ Test 2: Slow Loading Page"
 bash << 'EOF'
-playwright-cli open "https://httpbin.org/delay/3"
-playwright-cli snapshot > test2_immediate.txt
+npx playwright-cli open "https://httpbin.org/delay/3"
+npx playwright-cli snapshot > test2_immediate.txt
 sleep 4
-playwright-cli snapshot > test2_complete.txt
-playwright-cli screenshot test2_loaded.png
-playwright-cli close
+npx playwright-cli snapshot > test2_complete.txt
+npx playwright-cli screenshot test2_loaded.png
+npx playwright-cli close
 echo "✓ Test 2 Complete"
 EOF
 echo ""
@@ -540,10 +536,10 @@ echo ""
 # Test 4
 echo "▶ Test 4: Error Handling"
 bash << 'EOF'
-playwright-cli open "https://httpstat.us/404"
+npx playwright-cli open "https://httpstat.us/404"
 sleep 2
-playwright-cli screenshot test4_404.png
-playwright-cli close
+npx playwright-cli screenshot test4_404.png
+npx playwright-cli close
 echo "✓ Test 4 Complete"
 EOF
 echo ""
@@ -551,11 +547,11 @@ echo ""
 # Test 5
 echo "▶ Test 5: Dynamic Content"
 bash << 'EOF'
-playwright-cli open "https://jsonplaceholder.typicode.com/"
+npx playwright-cli open "https://jsonplaceholder.typicode.com/"
 sleep 3
-playwright-cli snapshot > test5_initial.txt
-playwright-cli screenshot test5_start.png
-playwright-cli close
+npx playwright-cli snapshot > test5_initial.txt
+npx playwright-cli screenshot test5_start.png
+npx playwright-cli close
 echo "✓ Test 5 Complete"
 EOF
 echo ""
@@ -568,13 +564,13 @@ echo ""
 # Test 7
 echo "▶ Test 7: Multi-Tab"
 bash << 'EOF'
-playwright-cli open "https://example.com"
+npx playwright-cli open "https://example.com"
 sleep 2
-playwright-cli tab-new "https://example.org"
+npx playwright-cli tab-new "https://example.org"
 sleep 2
-playwright-cli tab-list > test7_tabs.txt
-playwright-cli tab-select 0
-playwright-cli close
+npx playwright-cli tab-list > test7_tabs.txt
+npx playwright-cli tab-select 0
+npx playwright-cli close
 echo "✓ Test 7 Complete"
 EOF
 echo ""
@@ -582,11 +578,11 @@ echo ""
 # Test 8
 echo "▶ Test 8: Debugging"
 bash << 'EOF'
-playwright-cli open "https://jsonplaceholder.typicode.com/posts"
+npx playwright-cli open "https://jsonplaceholder.typicode.com/posts"
 sleep 3
-playwright-cli network > test8_network.txt
-playwright-cli console > test8_console.txt
-playwright-cli close
+npx playwright-cli network > test8_network.txt
+npx playwright-cli console > test8_console.txt
+npx playwright-cli close
 echo "✓ Test 8 Complete"
 EOF
 echo ""
@@ -706,22 +702,22 @@ For rapid validation, run these essential tests:
 
 ```bash
 # Quick Test 1: Basic navigation
-playwright-cli open "https://example.com" && sleep 2 && playwright-cli snapshot && playwright-cli close
+npx playwright-cli open "https://example.com" && sleep 2 && npx playwright-cli snapshot && npx playwright-cli close
 echo "✓ Navigation works"
 
 # Quick Test 2: Timing
-playwright-cli open "https://httpbin.org/delay/2" && sleep 3 && playwright-cli snapshot && playwright-cli close
+npx playwright-cli open "https://httpbin.org/delay/2" && sleep 3 && npx playwright-cli snapshot && npx playwright-cli close
 echo "✓ Timing works"
 
 # Quick Test 3: Error handling
-playwright-cli open "https://httpstat.us/404" 2>&1 | grep -q "404" && echo "✓ Error detection works"
+npx playwright-cli open "https://httpstat.us/404" 2>&1 | grep -q "404" && echo "✓ Error detection works"
 
 # Quick Test 4: Screenshot
-playwright-cli open "https://example.com" && sleep 2 && playwright-cli screenshot quick-test.png && playwright-cli close && ls quick-test.png
+npx playwright-cli open "https://example.com" && sleep 2 && npx playwright-cli screenshot quick-test.png && npx playwright-cli close && ls quick-test.png
 echo "✓ Screenshot works"
 
 # Quick Test 5: Multi-tab
-playwright-cli open "https://example.com" && playwright-cli tab-new "https://example.org" && playwright-cli tab-list && playwright-cli close
+npx playwright-cli open "https://example.com" && npx playwright-cli tab-new "https://example.org" && npx playwright-cli tab-list && npx playwright-cli close
 echo "✓ Multi-tab works"
 ```
 
