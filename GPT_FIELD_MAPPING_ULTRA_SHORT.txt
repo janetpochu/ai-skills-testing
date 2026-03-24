@@ -1,0 +1,27 @@
+# Ultra-Short GPT Mapping Prompt
+
+```
+Map EAPI to PAPI fields. Output table:
+
+| EAPI Field | Type | Logic | PAPI System | PAPI Source |
+|------------|------|-------|-------------|-------------|
+
+Rules:
+- EAPI Field: dot notation (data.name, data.items[].id)
+- Type: string, number, array<object>, etc.
+- Logic: empty if direct map, else: CONCAT(a,b), SUM(x), UPPERCASE(y), etc.
+- PAPI System: service name
+- PAPI Source: dot notation, comma-separated if multiple
+
+Examples:
+| data.customerName | string | CONCAT(first, " ", last) | CustomerAPI | data.firstName, data.lastName |
+| data.orderId | string | | OrderAPI | order.id |
+| data.total | number | SUM(items[].price) | OrderAPI | items[].price |
+| data.status | string | [HARDCODED: "active"] | N/A | N/A |
+
+Process EVERY nested field. Mark missing as [NOT AVAILABLE].
+
+My specs:
+[PASTE EAPI SPEC]
+[PASTE PAPI SPEC(S)]
+```
