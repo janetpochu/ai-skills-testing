@@ -1,0 +1,199 @@
+---
+name: springboot-api-doc
+description: >
+  Use this skill whenever the user wants to generate API documentation from Spring Boot source code.
+  Triggers include: "document this endpoint", "generate API doc", "read my Spring Boot code and document it",
+  "create endpoint documentation", "write docs for my controller", "document my REST API", or any request
+  to read Java/Spring Boot code and produce structured API documentation. This skill enforces field-level
+  completeness and a mandatory self-review cross-check before outputting any documentation. Always use this
+  skill when Spring Boot code + documentation output is involved — even if the user just pastes code and says
+  "document this".
+---
+
+# Spring Boot API Endpoint Documentation Skill
+
+Generates consistent, field-level-complete API documentation from Spring Boot source code, following a fixed
+template. A mandatory self-review cross-check step runs before any documentation is finalised — this prevents
+the common failure mode of missing fields, skipping validation rules, or omitting SAPI mapping rows.
+
+---
+
+## How to Use This Skill
+
+### Step 1 — Gather the Source Code
+
+The user will provide source code in one of these ways:
+
+| Input Mode | Action |
+|---|---|
+| Pasted code in chat | Read directly from context |
+| File(s) uploaded | `view /mnt/user-data/uploads/<file>` for each file |
+| GitHub / URL | `web_fetch` the raw URL |
+| Multiple files | Read ALL relevant files: Controller, Service, downstream client/SAPI, DTOs, validation classes, exception handlers |
+
+**Always try to read:**
+- `*Controller.java` — path, method, annotations, request/response types
+- `*Service.java` / `*ServiceImpl.java` — business logic, downstream calls
+- `*Client.java` / `*Feign*.java` / `*RestTemplate*.java` — SAPI/downstream calls
+- `*Request.java`, `*Response.java`, `*DTO.java` — field definitions
+- `*Validator.java`, `@Valid` / `@Validated` annotations, JSR-303 annotations
+- `*ExceptionHandler.java` / `*AdviceController.java` — error mapping
+- `application.yml` / `application.properties` — if referenced for config
+
+If any file is missing and cannot be inferred, note `⚠ Source not available — inferred from context` in the relevant section.
+
+---
+
+### Step 2 — Parse and Extract (Internal — Do Not Output Yet)
+
+Before writing the document, silently extract and record the following inventory. This is your working checklist.
+
+#### 2A. Endpoint Inventory
+For EACH `@GetMapping`, `@PostMapping`, `@PutMapping`, `@PatchMapping`, `@DeleteMapping`, `@RequestMapping`:
+- [ ] HTTP method
+- [ ] Full path (including class-level prefix)
+- [ ] Summary of what it does (from Javadoc or infer from method name + logic)
+
+#### 2B. Request Header Inventory
+For each `@RequestHeader` parameter:
+- [ ] Header name
+- [ ] Type / format
+- [ ] Required / optional (`required=false`?)
+- [ ] Example value
+- [ ] Description (infer from name + usage if no Javadoc)
+
+#### 2C. Request Body Field Inventory
+For EVERY field in the request DTO (recursively including nested objects):
+- [ ] Field name (exact)
+- [ ] Java type → API type (e.g., `String` → `string`, `LocalDate` → `string (yyyy-MM-dd)`)
+- [ ] Description (from Javadoc, field name, or usage)
+- [ ] Example value (realistic, not `"string"`)
+- [ ] Required? (check `@NotNull`, `@NotBlank`, `@NotEmpty`, `required` flag, or nullability)
+
+#### 2D. Validation Rule Inventory
+For each field with a constraint annotation:
+- [ ] Field name
+- [ ] Rule (e.g., `@Size(max=50)` → "Max 50 characters")
+- [ ] Error message (from annotation `message=` attribute or default)
+
+#### 2E. Response Body Field Inventory
+Same as 2C but for response DTO. Include ALL fields including nested objects.
+
+#### 2F. Response Header Inventory
+- [ ] Any `HttpServletResponse.addHeader(...)` or `ResponseEntity` headers
+- [ ] If JWT is set in a header — capture the header name and how the token is built
+
+#### 2G. JWT Inventory (if applicable)
+If a JWT or token is generated/returned:
+- [ ] Each claim field name
+- [ ] Claim type
+- [ ] Source (where the value comes from in code)
+- [ ] Description
+
+#### 2H. Error Inventory
+For each exception thrown or caught:
+- [ ] Exception class name
+- [ ] HTTP status code it maps to
+- [ ] Error response body structure
+- [ ] Typical trigger condition
+
+#### 2I. Architecture Layer Inventory
+Identify:
+- [ ] Controller class name
+- [ ] Service class name(s)
+- [ ] Repository / DAO class name(s) (if any)
+- [ ] Downstream client class name(s) (SAPI)
+- [ ] Config / utility classes involved
+
+#### 2J. SAPI / Downstream Call Inventory
+For EACH downstream API call:
+- [ ] Target service name
+- [ ] HTTP method + path
+- [ ] Request headers sent
+- [ ] Each request body field + where its value comes from (PAPI field, hardcoded, computed)
+- [ ] Each response body field and how it maps to the PAPI response
+
+---
+
+### Step 3 — Self-Review Cross-Check (MANDATORY — Do Not Skip)
+
+Before writing the document, perform this cross-check. Fix any gap found.
+
+```
+SELF-REVIEW CHECKLIST
+=====================
+[ ] Every field in Request DTO is in section "Request Body Structure" table — no missing rows
+[ ] Every field has a realistic Example (not "string", not "N/A", not blank)
+[ ] Every field has Required clearly marked Yes/No
+[ ] Every @Valid / JSR-303 annotation is reflected in "Request Validation Rules"
+[ ] Every field in Response DTO is in "Response Body Structure" table
+[ ] Every exception handler is represented in "Error Handling" table
+[ ] If JWT is present — JWT section exists with every claim documented
+[ ] Every SAPI downstream call has its own sub-section under "SAPI Request"
+[ ] Every SAPI request field has a "Source" column entry mapping back to PAPI or logic
+[ ] DATA Mapping table covers every PAPI response field ↔ SAPI response field
+[ ] Architecture table lists every identified layer
+[ ] Flow diagram covers the full happy path end-to-end
+```
+
+If any checkbox would be unchecked, resolve it from the code before proceeding.
+If the code is ambiguous, mark `⚠ Inferred — confirm with developer`.
+
+---
+
+### Step 4 — Write the Documentation
+
+Use the template in `references/doc-template.md`.
+One document per endpoint. If multiple endpoints exist, produce one document per endpoint.
+
+**Field-level rules (enforced):**
+- Table rows: never leave Description or Example blank — always write something meaningful
+- Examples must be realistic values, not type placeholders
+- Nested objects: expand every nested field as its own row with dot-notation name (e.g., `address.city`)
+- Arrays: document the item schema, e.g., `items[].productId`
+- Optional fields: mark Required = `No` and note any default value in Description
+
+**Output format:** Markdown (`.md`).
+Save to `/mnt/user-data/outputs/<EndpointName>-api-doc.md` and present to user.
+
+---
+
+### Step 5 — Final Output Checklist
+
+State this explicitly at the end of your response:
+
+```
+✅ Documentation complete.
+Cross-check summary:
+- Request body fields documented: N
+- Response body fields documented: N
+- Validation rules documented: N
+- Error cases documented: N
+- SAPI downstream calls documented: N
+- JWT section: Yes/No
+- Any inferred/uncertain fields: list them or "None"
+```
+
+---
+
+## Special Cases
+
+### Multiple Downstream (SAPI) Calls
+Create a separate `## SAPI Request — <ServiceName>` section for each call, in call order.
+
+### Pagination
+Document pagination fields (`page`, `size`, `totalElements`, etc.) as standard response fields.
+
+### File Upload Endpoints
+For `multipart/form-data`: document each form part as a row in Request Body table with type `file` or `string`.
+
+### Async / Event-driven
+If the endpoint publishes an event instead of calling SAPI directly, document the event payload under a `## Event Published` section using the same field-table format.
+
+---
+
+## Read the Template
+
+Before writing any documentation, read the full template:
+
+📄 `references/doc-template.md` — The exact markdown template to follow, section by section.
