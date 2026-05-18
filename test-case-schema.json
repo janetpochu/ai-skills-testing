@@ -1,0 +1,390 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "API Test Case File",
+  "description": "Schema for frontend test case JSON files generated from API spec",
+  "type": "object",
+  "required": ["endpoint", "generated_at", "summary", "test_cases"],
+  "properties": {
+
+    "endpoint": {
+      "type": "object",
+      "required": ["method", "path", "description"],
+      "properties": {
+        "method":      { "type": "string", "enum": ["GET","POST","PUT","PATCH","DELETE"] },
+        "path":        { "type": "string", "example": "/api/v1/payment" },
+        "description": { "type": "string", "example": "Initiates a payment transaction" }
+      }
+    },
+
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "example": "2024-11-01T10:30:00Z"
+    },
+
+    "summary": {
+      "type": "object",
+      "required": ["total", "happy", "negative"],
+      "properties": {
+        "total":    { "type": "integer" },
+        "happy":    { "type": "integer" },
+        "negative": { "type": "integer" }
+      }
+    },
+
+    "test_cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["case_id", "category", "sub_category", "description", "reason", "request", "expected_response"],
+        "properties": {
+
+          "case_id": {
+            "type": "string",
+            "pattern": "^(HAPPY|NEG)_\\d{3}$",
+            "description": "Unique identifier. HAPPY_001, HAPPY_002 ... NEG_001, NEG_002 ...",
+            "example": "HAPPY_001"
+          },
+
+          "category": {
+            "type": "string",
+            "enum": ["happy", "negative"],
+            "description": "Top-level category"
+          },
+
+          "sub_category": {
+            "type": "string",
+            "enum": [
+              "baseline",
+              "optional_omit",
+              "boundary_min",
+              "boundary_max",
+              "enum_value",
+              "boolean_true",
+              "boolean_false",
+              "missing_required",
+              "below_min",
+              "above_max",
+              "invalid_format",
+              "wrong_type",
+              "invalid_enum",
+              "null_required",
+              "error_handling",
+              "sapi_failure"
+            ],
+            "description": "Specific test sub-type — drives how the case was derived"
+          },
+
+          "description": {
+            "type": "string",
+            "description": "Human-readable description of what this case tests",
+            "example": "All required and optional fields valid — baseline happy path"
+          },
+
+          "reason": {
+            "type": "string",
+            "description": "Traceable reason from the spec — which rule, field, or section produced this case",
+            "example": "@Size(max=50) on field 'customerName' — testing upper boundary"
+          },
+
+          "request": {
+            "type": "object",
+            "required": ["body"],
+            "properties": {
+              "headers": {
+                "type": "object",
+                "description": "Request headers as key-value pairs. Omit if no special headers needed.",
+                "additionalProperties": { "type": "string" },
+                "example": {
+                  "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.test",
+                  "Content-Type": "application/json"
+                }
+              },
+              "body": {
+                "type": "object",
+                "description": "Request body. Must be a valid JSON object matching the endpoint's request schema. For negative cases, change ONLY the field under test — all other fields stay at baseline values.",
+                "example": {
+                  "customerId": "CUST-0012345",
+                  "amount": 150.00,
+                  "currency": "USD",
+                  "remarks": "Test payment"
+                }
+              }
+            }
+          },
+
+          "expected_response": {
+            "type": "object",
+            "required": ["http_status", "body"],
+            "properties": {
+              "http_status": {
+                "type": "integer",
+                "description": "Expected HTTP status code",
+                "example": 200
+              },
+              "headers": {
+                "type": "object",
+                "description": "Expected response headers (optional). Include only if the spec defines specific headers to verify (e.g. JWT token header).",
+                "additionalProperties": { "type": "string" },
+                "example": {
+                  "X-Auth-Token": "<jwt>"
+                }
+              },
+              "body": {
+                "type": "object",
+                "description": "Expected response body. For happy cases: realistic full response. For negative cases: the error structure from the spec's Error Handling table.",
+                "example": {
+                  "transactionId": "TXN-20241101-98765",
+                  "status": "SUCCESS",
+                  "amount": 150.00,
+                  "currency": "USD"
+                }
+              }
+            }
+          },
+
+          "setup_note": {
+            "type": "string",
+            "description": "Optional. Instructions for the F/E or test engineer on what needs to be mocked or stubbed for this case to work correctly.",
+            "example": "Mock SAPI /payments/process to return HTTP 500 to trigger this PAPI error response"
+          }
+
+        }
+      }
+    }
+  },
+
+  "examples": [
+    {
+      "endpoint": {
+        "method": "POST",
+        "path": "/api/v1/payment",
+        "description": "Initiates a payment transaction and returns a transaction ID"
+      },
+      "generated_at": "2024-11-01T10:30:00Z",
+      "summary": {
+        "total": 12,
+        "happy": 7,
+        "negative": 5
+      },
+      "test_cases": [
+        {
+          "case_id": "HAPPY_001",
+          "category": "happy",
+          "sub_category": "baseline",
+          "description": "All required and optional fields valid — baseline happy path",
+          "reason": "Baseline case — all fields from spec example column",
+          "request": {
+            "headers": {
+              "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.test",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "customerId": "CUST-0012345",
+              "amount": 150.00,
+              "currency": "USD",
+              "remarks": "Test payment"
+            }
+          },
+          "expected_response": {
+            "http_status": 200,
+            "body": {
+              "transactionId": "TXN-20241101-98765",
+              "status": "SUCCESS",
+              "amount": 150.00,
+              "currency": "USD"
+            }
+          }
+        },
+        {
+          "case_id": "HAPPY_002",
+          "category": "happy",
+          "sub_category": "optional_omit",
+          "description": "Optional field 'remarks' omitted — endpoint should still succeed",
+          "reason": "Field 'remarks' marked Required=No in spec Request Body table",
+          "request": {
+            "headers": {
+              "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.test",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "customerId": "CUST-0012345",
+              "amount": 150.00,
+              "currency": "USD"
+            }
+          },
+          "expected_response": {
+            "http_status": 200,
+            "body": {
+              "transactionId": "TXN-20241101-98766",
+              "status": "SUCCESS",
+              "amount": 150.00,
+              "currency": "USD"
+            }
+          }
+        },
+        {
+          "case_id": "HAPPY_003",
+          "category": "happy",
+          "sub_category": "boundary_min",
+          "description": "Field 'amount' at minimum boundary (0.01)",
+          "reason": "@DecimalMin(0.01) on field 'amount' — minimum boundary must be accepted",
+          "request": {
+            "headers": {
+              "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.test",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "customerId": "CUST-0012345",
+              "amount": 0.01,
+              "currency": "USD",
+              "remarks": "Min boundary test"
+            }
+          },
+          "expected_response": {
+            "http_status": 200,
+            "body": {
+              "transactionId": "TXN-20241101-98767",
+              "status": "SUCCESS",
+              "amount": 0.01,
+              "currency": "USD"
+            }
+          }
+        },
+        {
+          "case_id": "HAPPY_004",
+          "category": "happy",
+          "sub_category": "enum_value",
+          "description": "currency = 'EUR' (valid enum value)",
+          "reason": "currency field accepts USD, EUR, SGD per spec — each value must be tested",
+          "request": {
+            "headers": {
+              "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.test",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "customerId": "CUST-0012345",
+              "amount": 150.00,
+              "currency": "EUR",
+              "remarks": "EUR currency test"
+            }
+          },
+          "expected_response": {
+            "http_status": 200,
+            "body": {
+              "transactionId": "TXN-20241101-98768",
+              "status": "SUCCESS",
+              "amount": 150.00,
+              "currency": "EUR"
+            }
+          }
+        },
+        {
+          "case_id": "NEG_001",
+          "category": "negative",
+          "sub_category": "missing_required",
+          "description": "Required field 'customerId' missing",
+          "reason": "Field 'customerId' marked Required=Yes — omission must return 400",
+          "request": {
+            "headers": {
+              "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.test",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "amount": 150.00,
+              "currency": "USD",
+              "remarks": "Test payment"
+            }
+          },
+          "expected_response": {
+            "http_status": 400,
+            "body": {
+              "code": "VALIDATION_ERROR",
+              "message": "customerId is required"
+            }
+          }
+        },
+        {
+          "case_id": "NEG_002",
+          "category": "negative",
+          "sub_category": "above_max",
+          "description": "Field 'amount' above maximum boundary (10000.01 exceeds max of 10000.00)",
+          "reason": "@DecimalMax(10000.00) on field 'amount' — exceeding max must return 400",
+          "request": {
+            "headers": {
+              "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.test",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "customerId": "CUST-0012345",
+              "amount": 10000.01,
+              "currency": "USD",
+              "remarks": "Above max boundary test"
+            }
+          },
+          "expected_response": {
+            "http_status": 400,
+            "body": {
+              "code": "VALIDATION_ERROR",
+              "message": "amount must be less than or equal to 10000.00"
+            }
+          }
+        },
+        {
+          "case_id": "NEG_003",
+          "category": "negative",
+          "sub_category": "invalid_enum",
+          "description": "Field 'currency' has invalid enum value 'GBP' (not in accepted list)",
+          "reason": "currency only accepts USD, EUR, SGD per spec — invalid value must return 400",
+          "request": {
+            "headers": {
+              "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.test",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "customerId": "CUST-0012345",
+              "amount": 150.00,
+              "currency": "GBP",
+              "remarks": "Invalid enum test"
+            }
+          },
+          "expected_response": {
+            "http_status": 400,
+            "body": {
+              "code": "VALIDATION_ERROR",
+              "message": "currency must be one of: USD, EUR, SGD"
+            }
+          }
+        },
+        {
+          "case_id": "NEG_004",
+          "category": "negative",
+          "sub_category": "sapi_failure",
+          "description": "SAPI payment service returns 500 — PAPI should return 503",
+          "reason": "SAPI Error Handling table: 5xx from payment SAPI maps to 503 Service Unavailable",
+          "request": {
+            "headers": {
+              "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.test",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "customerId": "CUST-0012345",
+              "amount": 150.00,
+              "currency": "USD",
+              "remarks": "SAPI failure test"
+            }
+          },
+          "expected_response": {
+            "http_status": 503,
+            "body": {
+              "code": "SERVICE_UNAVAILABLE",
+              "message": "Payment service is temporarily unavailable. Please try again."
+            }
+          },
+          "setup_note": "Mock SAPI endpoint POST /sapi/v1/payments to return HTTP 500 before running this case"
+        }
+      ]
+    }
+  ]
+}
