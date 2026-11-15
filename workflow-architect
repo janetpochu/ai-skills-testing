@@ -29,3 +29,11 @@ Merge and refactor bloated SDLC workflow files into a lean state-machine archite
 2. **Map:** Group instructions into `AGENTS.md`, `SKILL.md`, `references/folder-schema.md`, `references/phase-1-spec.md` (Steps 1–6), `references/step-07-ticketing.md`, `references/phase-2-delivery.md` (Steps 8–10), and `references/step-11-closure.md`.
 3. **Generate:** Write each modular file cleanly into `.opencode/skills/sdlc-orchestrator/`.
 4. **Verify:** Output a side-by-side verification checklist proving 100% of original rules, sub-skills, and edge cases exist in the refactored files.
+
+
+Command to init the workflow 
+Use the `workflow-architect` skill to refactor and merge my two legacy SDLC files:
+1. Workflow 1 (Steps 1–7): <paste path to workflow 1>
+2. Workflow 2 (Steps 7–11 / specific-papi-delivery): <paste path to workflow 2>
+
+Start by extracting and unifying Step 7 and Step 11 first, then output the complete modular `.opencode/skills/sdlc-orchestrator/` structure and trimmed `AGENTS.md`.
