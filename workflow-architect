@@ -1,25 +1,31 @@
 ---
 name: workflow-architect
-description: Refactors monolithic agent prompts (>200 lines) into a modular orchestrator SKILL.md with progressive disclosure reference files and deterministic state gates.
+description: Refactors and merges monolithic SDLC agent prompts into a modular orchestrator SKILL.md with progressive disclosure reference files and deterministic state gates.
 ---
 
 # Workflow Architect & Skill Refactorer
 
 ## Objective
-Convert bloated, single-file agent instructions into a lean state-machine architecture without losing any business logic, file paths, or git checkpoint rules.
+Merge and refactor bloated SDLC workflow files into a lean state-machine architecture without losing any business logic, file paths, approval gates, or git checkpoint rules.
 
 ## Refactoring Rules (Mandatory)
 1. **Strict Line Budgets:**
-   - `AGENTS.md`: Maximum 80 lines (global constraints & skill triggers only).
-   - `SKILL.md`: Maximum 120 lines (mode routing, state machine, and step gates only).
-   - `references/*.md`: Unlimited, split logically by workflow phase or static schema.
-2. **Zero Logic Loss:** Preserve every exact file path, naming convention, mode condition, and sub-skill invocation (`/implement`, `/tdd`, `/code-review`).
-3. **Extract Static Trees:** Move all folder structures, file ownership tables, and output templates into `references/folder-schema.md`.
-4. **Group by Execution Phase:** Split sequential steps into isolated phase files (e.g., `references/phase-1-spec.md` for Steps 1–6, `references/phase-2-delivery.md` for Steps 7–11) so the agent only loads active instructions.
-5. **Enforce State Relay:** Inject a mandatory `progress.md` read/write gate and git commit rule at the boundary of every step.
+   - `AGENTS.md`: Maximum 80 lines (global constraints, git commit format & skill triggers only).
+   - `SKILL.md`: Maximum 120 lines (mode routing, state machine & step gates only).
+   - `references/*.md`: Split logically by static schema, phase, and boundary steps.
+2. **Multi-File Merge & Deduplication:**
+   - Unify overlapping Step 7 handoffs (`to-tickets` -> `<ticket-id>-<slug>/` -> `delivery.md` -> `README.md`) into `references/step-07-ticketing.md`.
+   - Remove redundant cold-start branches in Workflow 2 (`Existing == No`) that duplicate Steps 1–6.
+3. **Zero Logic & Sub-Skill Loss:**
+   - Preserve every exact path under `/<repo>/docs/<project>/<endpoints>/`, all 3 modes, human approval gates (`Tech-lead approval`), and every sub-skill call (`/specific-papi-research`, `e2e-implementation`, `to-tickets`, `/pib-api-bdd`, `/implement`, `/tdd`, `/code-review`).
+4. **Extract Static Trees:**
+   - Move all directory trees, file ownership rules (1-per-endpoint vs 1-per-change vs 1-per-ticket), and output templates into `references/folder-schema.md`.
+5. **Enforce State Relay & Loops:**
+   - Inject a mandatory `progress.md` read/write gate and `chore(sdlc): [step-XX]` git commit rule at every step boundary.
+   - Explicitly model the **1-to-many ticket loop** across Steps 8–10 before triggering `references/step-11-closure.md`.
 
 ## Execution Steps
-1. **Audit:** Read the target monolithic file and list all modes, folder paths, input/output artifacts, and step transitions.
-2. **Map:** Group instructions into Global Rules, State Router, Static Schemas, and Phase Instructions.
-3. **Generate:** Output the complete directory tree and write each modular file cleanly.
-4. **Verify:** Cross-check the generated files against the original 500-line file to confirm 100% of original rules and edge cases remain intact.
+1. **Audit:** Read all target legacy workflow files; list all modes, paths, approval gates, sub-skills, and step transitions.
+2. **Map:** Group instructions into `AGENTS.md`, `SKILL.md`, `references/folder-schema.md`, `references/phase-1-spec.md` (Steps 1–6), `references/step-07-ticketing.md`, `references/phase-2-delivery.md` (Steps 8–10), and `references/step-11-closure.md`.
+3. **Generate:** Write each modular file cleanly into `.opencode/skills/sdlc-orchestrator/`.
+4. **Verify:** Output a side-by-side verification checklist proving 100% of original rules, sub-skills, and edge cases exist in the refactored files.
