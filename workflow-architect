@@ -1,0 +1,25 @@
+---
+name: workflow-architect
+description: Refactors monolithic agent prompts (>200 lines) into a modular orchestrator SKILL.md with progressive disclosure reference files and deterministic state gates.
+---
+
+# Workflow Architect & Skill Refactorer
+
+## Objective
+Convert bloated, single-file agent instructions into a lean state-machine architecture without losing any business logic, file paths, or git checkpoint rules.
+
+## Refactoring Rules (Mandatory)
+1. **Strict Line Budgets:**
+   - `AGENTS.md`: Maximum 80 lines (global constraints & skill triggers only).
+   - `SKILL.md`: Maximum 120 lines (mode routing, state machine, and step gates only).
+   - `references/*.md`: Unlimited, split logically by workflow phase or static schema.
+2. **Zero Logic Loss:** Preserve every exact file path, naming convention, mode condition, and sub-skill invocation (`/implement`, `/tdd`, `/code-review`).
+3. **Extract Static Trees:** Move all folder structures, file ownership tables, and output templates into `references/folder-schema.md`.
+4. **Group by Execution Phase:** Split sequential steps into isolated phase files (e.g., `references/phase-1-spec.md` for Steps 1–6, `references/phase-2-delivery.md` for Steps 7–11) so the agent only loads active instructions.
+5. **Enforce State Relay:** Inject a mandatory `progress.md` read/write gate and git commit rule at the boundary of every step.
+
+## Execution Steps
+1. **Audit:** Read the target monolithic file and list all modes, folder paths, input/output artifacts, and step transitions.
+2. **Map:** Group instructions into Global Rules, State Router, Static Schemas, and Phase Instructions.
+3. **Generate:** Output the complete directory tree and write each modular file cleanly.
+4. **Verify:** Cross-check the generated files against the original 500-line file to confirm 100% of original rules and edge cases remain intact.
